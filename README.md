@@ -1,6 +1,5 @@
 # browse_matu
 
-[![GitHub Actions](https://github.com/zahi-ko/browse_matu/workflows/Actions/badge.svg)](https://github.com/zahi-ko/browse_matu/actions)
 [![GitHub Stars](https://img.shields.io/github/stars/zahi-ko/browse_matu?style=social)](https://github.com/zahi-ko/browse_matu)
 [![GitHub Forks](https://img.shields.io/github/forks/zahi-ko/browse_matu?style=social)](https://github.com/zahi-ko/browse_matu/network/members)
 [![GitHub License](https://img.shields.io/github/license/zahi-ko/browse_matu)](LICENSE)

@@ -7,8 +7,8 @@ import requests
 def login(s: requests.Session, username: str, password: str) -> bool:
     login_url = "http://matu.uestc.edu.cn:80/aptat/user/dologin.action"
     login_data = {
-        "user.Login": "Zahi",
-        "user.Password": "Trapshitv22",
+        "user.Login": username,
+        "user.Password": password,
     }
     s.headers.update({
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0"
@@ -31,7 +31,7 @@ def collectLinks(s: requests.Session, resp: requests.Response, pattern: str = ""
     
     return links
 
-def patternSelector(pattern_name: str):
+def patternSelector(pattern_name: str) -> str:
     if pattern_name == "class":
         # 作业列表
         return r'liststudenttaskgroup\?_class\.id=(\d+)$'
@@ -47,7 +47,7 @@ def patternSelector(pattern_name: str):
     else:
         return ''
 
-def turnPageURL(url: str, page: int):
+def turnPageURL(url: str, page: int) -> str:
     return url + f"&page={page}"
 
 def readTable(text: str, url: str) -> dict:
@@ -83,7 +83,7 @@ def collectInfo(s: requests.Session, url: str) -> dict:
 
     return info
 
-def downloadFile(s: requests.Session, url: str, path: str, name: str):
+def downloadFile(s: requests.Session, url: str, path: str, name: str) -> bool:
     r = s.get(url, allow_redirects=True)
     if r.ok:
         with open(os.path.join(path, name), "wb") as f:
@@ -92,13 +92,13 @@ def downloadFile(s: requests.Session, url: str, path: str, name: str):
     else:
         return False
 
-def recordInfo(s: requests.Session, taskid: str | int, path: str):
+def recordInfo(s: requests.Session, taskid: str | int, path: str) -> None:
     if isinstance(taskid, int):
         taskid = str(taskid)
     taskurl = f"http://matu.uestc.edu.cn/aptat/task/taskdetail?taskid={taskid}"
 
     info = collectInfo(s, taskurl)
-    with open(os.path.join(path, f"{taskid}.txt"), "a", encoding='utf-8') as f:
+    with open(os.path.join(path, f"{taskid}.txt"), "w", encoding='utf-8') as f:
         f.write(f"题目编号: {info['id']}\n")
         f.write(f"题目名称: {info['name']}\n")
         f.write(f"题目信息: {info['description']}\n")
@@ -109,11 +109,16 @@ def getMaxPage(soup: bs4.BeautifulSoup) -> int:
     return int(page.text) if page else 1
 
 def main():
+    """
+    主函数，用于执行程序的主要逻辑。
+
+    :return: None
+    """
     s = requests.Session()
-    dpath = r"C:\Users\zahir\Downloads\codes"
-    rpath = r"c:\Users\zahir\Downloads\info"
+    dpath = r"path to save your code"
+    rpath = r"path to save problem information"
     domain = "http://matu.uestc.edu.cn"
-    if not login(s, "Zahi", "Trapshitv22"):
+    if not login(s, "your username", "your password"):
         print("登录失败")
         return
 
